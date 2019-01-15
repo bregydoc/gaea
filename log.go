@@ -10,8 +10,8 @@ var Info LogType = "info"
 var Error LogType = "error"
 
 type Log struct {
-	At      time.Time         `json:"at"`
-	Fields  map[string]string `json:"fields"`
-	Content string            `json:"content"`
-	Type    LogType           `json:"type"`
+	At      time.Time         `json:"at" bson:"at"`
+	Fields  map[string]string `json:"fields" bson:"fields"`
+	Content string            `json:"content" bson:"content"`
+	Type    LogType           `json:"type" bson:"type"`
 }

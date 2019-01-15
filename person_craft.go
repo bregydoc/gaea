@@ -1,6 +1,7 @@
 package gaea
 
 import (
+	"strings"
 	"time"
 )
 
@@ -25,6 +26,17 @@ func ModelPersonWithMinimalInformation(info *MinimalPersonInformation) (*Person,
 		Groups: []Group{Customer},
 	}
 
+	names := strings.Split(person.Name, " ")
+	if len(names) < 2 {
+		return nil, invalidPersonName
+	}
+
+	for i, n := range names {
+		names[i] = capitalizeString(n)
+	}
+
+	person.Name = strings.Join(names, " ")
+
 	switch account.Type {
 	case Email:
 		person.EmailAccount = &EmailAddress{
@@ -38,7 +50,7 @@ func ModelPersonWithMinimalInformation(info *MinimalPersonInformation) (*Person,
 		}
 		break
 	case Phone:
-		phone, err := GetPhoneNumberFromString(account.ID)
+		phone, err := getPhoneNumberFromString(account.ID)
 		if err != nil {
 			return nil, err
 		}

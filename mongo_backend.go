@@ -4,6 +4,8 @@ import (
 	"context"
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
+	"github.com/mongodb/mongo-go-driver/mongo/options"
+	"github.com/oklog/ulid"
 	"time"
 )
 
@@ -33,7 +35,15 @@ func NewMongoRepo(config *Config) (*MongoRepo, error) {
 }
 
 func (m *MongoRepo) Connect(ctx context.Context) error {
-	return m.client.Connect(ctx)
+	err := m.client.Connect(ctx)
+	if err != nil {
+		return err
+	}
+	_, err = m.personCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
+		Keys: bson.M{"email": "asd"},
+	})
+
+	return err
 }
 
 func (m *MongoRepo) SignUp(ctx context.Context, info *MinimalPersonInformation) (*Person, error) {
@@ -44,6 +54,7 @@ func (m *MongoRepo) SignUp(ctx context.Context, info *MinimalPersonInformation) 
 	}
 	person.UpdatedAt = time.Now()
 
+	// Save process
 	res, err := m.personCollection.InsertOne(ctx, person)
 	if err != nil {
 		return nil, err
@@ -58,4 +69,8 @@ func (m *MongoRepo) SignUp(ctx context.Context, info *MinimalPersonInformation) 
 	}
 
 	return savedPerson, nil
+}
+
+func (m *MongoRepo) SignIn(ctx context.Context, personID ulid.ULID, account *Account) (*Person, *Session, error) {
+
 }
