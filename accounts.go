@@ -1,6 +1,9 @@
 package gaea
 
-import "time"
+import (
+	"github.com/oklog/ulid"
+	"time"
+)
 
 type AccountType string
 
@@ -14,6 +17,7 @@ var Twitter AccountType = "twitter"
 var Github AccountType = "github"
 
 type Account struct {
+	Person       ulid.ULID   `json:"person"`
 	Type         AccountType `json:"type"`
 	ID           string      `json:"id"`
 	PasswordHash string      `json:"password"`

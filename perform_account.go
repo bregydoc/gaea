@@ -63,3 +63,10 @@ func GenerateAndEncodeAccount(account *Account, pass string) (*Account, error) {
 		return nil, accountTypeNotExist
 	}
 }
+
+func CheckIfPasswordIsCorrect(account *Account, password string) (*Account, error) {
+	hash := []byte(account.PasswordHash)
+	pass := []byte(password)
+	err := bcrypt.CompareHashAndPassword(hash, pass)
+	return account, err
+}

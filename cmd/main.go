@@ -13,7 +13,8 @@ func main() {
 
 	repo, err := gaea.NewMongoRepo(&gaea.Config{
 		UriConnection:  uri,
-		UsersDBName:    "people",
+		PeopleDBName:   "people",
+		AccountsDBName: "account",
 		SessionsDBName: "sessions",
 	})
 	if err != nil {

@@ -26,6 +26,8 @@ func ModelPersonWithMinimalInformation(info *MinimalPersonInformation) (*Person,
 		Groups: []Group{Customer},
 	}
 
+	account.Person = person.ID
+
 	names := strings.Split(person.Name, " ")
 	if len(names) < 2 {
 		return nil, invalidPersonName
