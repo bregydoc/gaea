@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// ModelPersonWithMinimalInformation returns a person with a minimal information
 func ModelPersonWithMinimalInformation(info *MinimalPersonInformation) (*Person, error) {
 	// Creating person
 	account, err := GenerateAndEncodeAccount(info.Account, info.Password)
@@ -30,7 +31,7 @@ func ModelPersonWithMinimalInformation(info *MinimalPersonInformation) (*Person,
 
 	names := strings.Split(person.Name, " ")
 	if len(names) < 2 {
-		return nil, invalidPersonName
+		return nil, errInvalidPersonName
 	}
 
 	for i, n := range names {
@@ -80,7 +81,7 @@ func ModelPersonWithMinimalInformation(info *MinimalPersonInformation) (*Person,
 		}
 		break
 	default:
-		return nil, accountTypeNotExist
+		return nil, errAccountTypeNotExist
 	}
 
 	return person, nil

@@ -1,14 +1,16 @@
 package gaea
 
 import (
-	"golang.org/x/crypto/bcrypt"
 	"net/mail"
 	"regexp"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 var phoneRegex = regexp.MustCompile(`^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$`)
 
+// GenerateAndEncodeAccount generate an account based on this basic information
 func GenerateAndEncodeAccount(account *Account, pass string) (*Account, error) {
 	newAccount := new(Account)
 	switch account.Type {
@@ -32,7 +34,7 @@ func GenerateAndEncodeAccount(account *Account, pass string) (*Account, error) {
 
 	case Phone:
 		if !phoneRegex.Match([]byte(account.ID)) {
-			return nil, invalidPhoneNumber
+			return nil, errInvalidPhoneNumber
 		}
 
 		hash, err := bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
@@ -58,12 +60,13 @@ func GenerateAndEncodeAccount(account *Account, pass string) (*Account, error) {
 		newAccount.Type = Username
 		return newAccount, nil
 	case Google:
-		return nil, unimplementedError
+		return nil, errUnimplementedError
 	default:
-		return nil, accountTypeNotExist
+		return nil, errAccountTypeNotExist
 	}
 }
 
+// CheckIfPasswordIsCorrect only compare a original password with hashed password using bcrypt
 func CheckIfPasswordIsCorrect(account *Account, password string) (*Account, error) {
 	hash := []byte(account.PasswordHash)
 	pass := []byte(password)

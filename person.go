@@ -1,18 +1,22 @@
 package gaea
 
 import (
-	"github.com/oklog/ulid"
 	"time"
+
+	"github.com/oklog/ulid"
 )
 
+// MID is a global scale identificator
 type MID string
 
+// Date is that, a date
 type Date struct {
 	Day   int64 `json:"day" bson:"day"`
 	Month int64 `json:"month" bson:"month"`
 	Year  int64 `json:"year" bson:"year"`
 }
 
+// EmailAddress describe an email address of people
 type EmailAddress struct {
 	Address     string   `json:"address" bson:"address"`
 	DisplayName string   `json:"display_name" bson:"display_name"`
@@ -21,6 +25,7 @@ type EmailAddress struct {
 	Valid       bool     `json:"valid" bson:"valid"`
 }
 
+// PhoneNumber is only a phone number for a person
 type PhoneNumber struct {
 	DisplayName string `json:"display_name" bson:"display_name"`
 	Type        string `json:"type" bson:"type"`
@@ -29,6 +34,7 @@ type PhoneNumber struct {
 	Valid       bool   `json:"valid" bson:"valid"`
 }
 
+// IdentityDocument is a struct to identify document (e.g. DNI and passport)
 type IdentityDocument struct {
 	DisplayName string `json:"display_name" bson:"display_name"`
 	Type        string `json:"type" bson:"type"`
@@ -36,6 +42,7 @@ type IdentityDocument struct {
 	Valid       bool   `json:"valid" bson:"valid"`
 }
 
+// Person is all, our user, all around this struct is the most important
 type Person struct {
 	ID       ulid.ULID `json:"id" bson:"id"`
 	MID      MID       `json:"mid" bson:"mid"`

@@ -1,11 +1,13 @@
 package gaea
 
 import (
-	"github.com/oklog/ulid"
 	"net"
 	"time"
+
+	"github.com/oklog/ulid"
 )
 
+// Session define a session person (links person with device)
 type Session struct {
 	ID          ulid.ULID         `json:"id" bson:"id"`
 	CreatedAt   time.Time         `json:"created_at" bson:"created_at"`
@@ -18,6 +20,7 @@ type Session struct {
 	Metadata    map[string]string `json:"metadata" bson:"metadata"`
 }
 
+// NewSession returns a new session
 func NewSession(account *Account, duration time.Duration, clientIP net.IP) (*Session, error) {
 	s := &Session{
 		CreatedAt:   time.Now(),

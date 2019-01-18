@@ -1,9 +1,10 @@
 package gaea
 
 import (
-	"github.com/ttacon/libphonenumber"
 	"strconv"
 	"strings"
+
+	"github.com/ttacon/libphonenumber"
 )
 
 func getPhoneNumberFromString(phone string) (*PhoneNumber, error) {

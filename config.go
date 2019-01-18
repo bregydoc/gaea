@@ -1,5 +1,7 @@
 package gaea
 
+// TODO: PLEASEEEEEEEEEEEE
+// Config ...
 type Config struct {
 	UriConnection  string `yaml:"uri_connection"`
 	PeopleDBName   string `yaml:"users_db_name"`

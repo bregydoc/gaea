@@ -1,9 +1,10 @@
 package gaea
 
 import (
-	"github.com/oklog/ulid"
 	"math/rand"
 	"time"
+
+	"github.com/oklog/ulid"
 )
 
 var t = time.Unix(1000000, 0)
