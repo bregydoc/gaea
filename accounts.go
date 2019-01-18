@@ -9,28 +9,28 @@ import (
 // AccountType is a kind of account
 type AccountType string
 
-// Anonymous is a Anonymous account kind
+// Anonymous is a kind of account
 var Anonymous AccountType = "anonymous"
 
-// Username is a Username account kind
+// Username is a kind of account
 var Username AccountType = "username"
 
-// Phone is a Phone account kind
+// Phone is a kind of account
 var Phone AccountType = "phone"
 
-// Email is a Email account kind
+// Email is a kind of account
 var Email AccountType = "email"
 
-// Google is a Google account kind
+// Google is a kind of account
 var Google AccountType = "google"
 
-// Facebook is a Facebook account kind
+// Facebook is a kind of account
 var Facebook AccountType = "facebook"
 
-// Twitter is a Twitter account kind
+// Twitter is a kind of account
 var Twitter AccountType = "twitter"
 
-// Github is a Github account kind
+// Github is a kind of account
 var Github AccountType = "github"
 
 // Account is a struct to represent the way how to person connect with our services
