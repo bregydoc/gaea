@@ -8,6 +8,8 @@ import (
 
 // Repository is an interface to determinated repository
 type Repository interface {
+	Connect(c context.Context) error
+
 	CreatePerson(c context.Context, person *Person) (*Person, error)
 	GetPersonByID(c context.Context, id ulid.ULID) (*Person, error)
 	GetPersonByAccount(c context.Context, account *Account) (*Person, error)
@@ -16,7 +18,7 @@ type Repository interface {
 	DeletePerson(c context.Context, person *Person) (*Person, error)
 
 	CreateAccount(c context.Context, account *Account) (*Account, error)
-	GetAccountByID(c context.Context, id ulid.ULID) (*Account, error)
+	GetAccountByID(c context.Context, id string) (*Account, error)
 	UpdateAccount(c context.Context, account *Account) (*Account, error)
 	DeleteAccount(c context.Context, account *Account) (*Account, error)
 

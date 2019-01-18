@@ -38,22 +38,22 @@ func NewRepo(uri, db, peopleCollection, accountsCollection, sessionsCollection s
 }
 
 // Connect implement and lauch repository
-func (m *Repo) Connect(ctx context.Context) error {
-	err := m.client.Connect(ctx)
+func (m *Repo) Connect(c context.Context) error {
+	err := m.client.Connect(c)
 	if err != nil {
 		return err
 	}
 
 	unique := true
 
-	_, err = m.accountsCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
+	_, err = m.accountsCollection.Indexes().CreateOne(c, mongo.IndexModel{
 		Keys: bson.M{"id": 1},
 		Options: &options.IndexOptions{
 			Unique: &unique,
 		},
 	})
 
-	_, err = m.peopleCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
+	_, err = m.peopleCollection.Indexes().CreateOne(c, mongo.IndexModel{
 		Keys: bson.M{"id": 1},
 		Options: &options.IndexOptions{
 			Unique: &unique,
