@@ -3,7 +3,6 @@ package mongo
 import (
 	"context"
 
-	"github.com/bregydoc/gaea"
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
 	"github.com/mongodb/mongo-go-driver/mongo/options"
@@ -12,7 +11,6 @@ import (
 // Repo is a gaea repository
 type Repo struct {
 	client *mongo.Client
-	config *gaea.Config
 
 	peopleCollection   *mongo.Collection
 	sessionsCollection *mongo.Collection
@@ -20,19 +18,17 @@ type Repo struct {
 }
 
 // NewRepo create new mongo repository
-func NewRepo(config *gaea.Config) (*Repo, error) {
-	client, err := mongo.NewClient(config.UriConnection)
+func NewRepo(uri, db, peopleCollection, accountsCollection, sessionsCollection string) (*Repo, error) {
+	client, err := mongo.NewClient(uri)
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO: Fix this, please
-	p := client.Database(config.PeopleDBName).Collection(config.PeopleDBName)
-	a := client.Database(config.PeopleDBName).Collection(config.AccountsDBName)
-	s := client.Database(config.SessionsDBName).Collection(config.SessionsDBName)
+	p := client.Database(db).Collection(peopleCollection)
+	a := client.Database(db).Collection(accountsCollection)
+	s := client.Database(db).Collection(sessionsCollection)
 
 	return &Repo{
-		config:             config,
 		client:             client,
 		peopleCollection:   p,
 		sessionsCollection: s,
