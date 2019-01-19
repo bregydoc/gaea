@@ -34,7 +34,7 @@ func GenerateAndEncodeAccount(account *Account, pass string) (*Account, error) {
 
 	case Phone:
 		if !phoneRegex.Match([]byte(account.ID)) {
-			return nil, errInvalidPhoneNumber
+			return nil, ErrInvalidPhoneNumber
 		}
 
 		hash, err := bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
@@ -60,9 +60,9 @@ func GenerateAndEncodeAccount(account *Account, pass string) (*Account, error) {
 		newAccount.Type = Username
 		return newAccount, nil
 	case Google:
-		return nil, errUnimplementedError
+		return nil, ErrUnimplementedError
 	default:
-		return nil, errAccountTypeNotExist
+		return nil, ErrAccountTypeNotExist
 	}
 }
 

@@ -6,16 +6,19 @@ import (
 
 	"github.com/bregydoc/gaea"
 	"github.com/mongodb/mongo-go-driver/bson"
-	"github.com/oklog/ulid"
 )
 
 // CreateAccount is for implement Gaea Repository interface
 func (m *Repo) CreateAccount(c context.Context, account *gaea.Account) (*gaea.Account, error) {
-	panic("unimplemented")
+	res, err := m.accountsCollection.InsertOne(c, account)
+	if err != nil {
+		return nil, err
+	}
+	return m.GetAccountByMongoID(c, res.InsertedID)
 }
 
 // GetAccountByMongoID returns an account find by mongo id ("_id")
-func (m *Repo) GetAccountByMongoID(c context.Context, id string) (*gaea.Account, error) {
+func (m *Repo) GetAccountByMongoID(c context.Context, id interface{}) (*gaea.Account, error) {
 	a := new(gaea.Account)
 	err := m.accountsCollection.FindOne(c, bson.M{"_id": id}).Decode(a)
 	if err != nil {
@@ -25,7 +28,7 @@ func (m *Repo) GetAccountByMongoID(c context.Context, id string) (*gaea.Account,
 }
 
 // GetAccountByID is for implement Gaea Repository interface
-func (m *Repo) GetAccountByID(c context.Context, id ulid.ULID) (*gaea.Account, error) {
+func (m *Repo) GetAccountByID(c context.Context, id string) (*gaea.Account, error) {
 	a := new(gaea.Account)
 	err := m.accountsCollection.FindOne(c, bson.M{"id": id}).Decode(a)
 	if err != nil {

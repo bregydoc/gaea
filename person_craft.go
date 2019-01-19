@@ -31,7 +31,7 @@ func ModelPersonWithMinimalInformation(info *MinimalPersonInformation) (*Person,
 
 	names := strings.Split(person.Name, " ")
 	if len(names) < 2 {
-		return nil, errInvalidPersonName
+		return nil, ErrInvalidPersonName
 	}
 
 	for i, n := range names {
@@ -81,7 +81,7 @@ func ModelPersonWithMinimalInformation(info *MinimalPersonInformation) (*Person,
 		}
 		break
 	default:
-		return nil, errAccountTypeNotExist
+		return nil, ErrAccountTypeNotExist
 	}
 
 	return person, nil

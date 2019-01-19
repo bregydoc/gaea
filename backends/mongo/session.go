@@ -11,11 +11,15 @@ import (
 
 // CreateSession implemented the Gaea Repository interface
 func (m *Repo) CreateSession(c context.Context, session *gaea.Session) (*gaea.Session, error) {
-	panic("unimplemented")
+	res, err := m.sessionsCollection.InsertOne(c, session)
+	if err != nil {
+		return nil, err
+	}
+	return m.GetSessionByMongoID(c, res.InsertedID)
 }
 
 // GetSessionByMongoID returns a session by Mongo id ("_id")
-func (m *Repo) GetSessionByMongoID(c context.Context, id string) (*gaea.Session, error) {
+func (m *Repo) GetSessionByMongoID(c context.Context, id interface{}) (*gaea.Session, error) {
 	s := new(gaea.Session)
 	err := m.sessionsCollection.FindOne(c, bson.M{"_id": id}).Decode(s)
 	if err != nil {

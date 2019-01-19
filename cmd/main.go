@@ -2,38 +2,35 @@ package main
 
 import (
 	"context"
-	"github.com/bregydoc/gaea"
+
 	"github.com/k0kubun/pp"
-	"time"
+
+	"github.com/bregydoc/gaea/backends/mongo"
+
+	"github.com/bregydoc/gaea"
 )
 
 func main() {
 
 	uri := "mongodb+srv://bregymr:" + pass + "@bombo0-l7ebf.gcp.mongodb.net/test?retryWrites=true"
 
-	repo, err := gaea.NewMongoRepo(&gaea.Config{
-		UriConnection:  uri,
-		PeopleDBName:   "people",
-		AccountsDBName: "account",
-		SessionsDBName: "sessions",
-	})
+	repo, err := mongo.NewRepo(uri, "gaea", "people", "accounts", "sessions")
 	if err != nil {
 		panic(err)
 	}
 
-	c, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	err = repo.Connect(c)
+	err = repo.Connect(context.TODO())
 	if err != nil {
 		panic(err)
 	}
 
-	p, err := repo.SignUp(c, &gaea.MinimalPersonInformation{
-		Name: "Bregy Malpartida",
+	service, err := gaea.NewService(repo)
+
+	bregy, err := service.SignUp(context.TODO(), &gaea.MinimalPersonInformation{
+		Name: "Bregy Malpartida Ramos",
 		Account: &gaea.Account{
-			ID:   "bregy.malpartida@utec.edu.pe",
 			Type: gaea.Email,
+			ID:   "bregymr2@gmail.com",
 		},
 		Password: "malpartida1",
 	})
@@ -42,7 +39,7 @@ func main() {
 		panic(err)
 	}
 
-	_, _ = pp.Println(p)
+	pp.Println(bregy)
 }
 
 const pass = "6Ntgf3YQBXi0WWj8"

@@ -16,11 +16,11 @@ func (m *Repo) CreatePerson(c context.Context, person *gaea.Person) (*gaea.Perso
 		return nil, err
 	}
 
-	return m.GetPersonByMongoID(c, r.InsertedID.(string))
+	return m.GetPersonByMongoID(c, r.InsertedID)
 }
 
 // GetPersonByMongoID returns a person by mongo ID ("_id")
-func (m *Repo) GetPersonByMongoID(c context.Context, id string) (*gaea.Person, error) {
+func (m *Repo) GetPersonByMongoID(c context.Context, id interface{}) (*gaea.Person, error) {
 	p := new(gaea.Person)
 	err := m.peopleCollection.FindOne(c, bson.M{"_id": id}).Decode(p)
 	if err != nil {
