@@ -3,13 +3,15 @@ package gaea
 import (
 	"context"
 	"net"
+	"net/http"
 	"time"
 
 	"github.com/oklog/ulid"
 )
 
 // SignUp implemets the Gaea service
-func (s *Service) SignUp(c context.Context, info *MinimalPersonInformation) (*Person, error) {
+func (s *Service) SignUp(c context.Context, info *MinimalPersonInformation, extra ...*Person) (*Person, error) {
+	// TODO: Use extra information to boostrap new person
 	// Checkin Account Person
 	person, err := ModelPersonWithMinimalInformation(info)
 	if err != nil {
@@ -38,8 +40,7 @@ func (s *Service) SignUp(c context.Context, info *MinimalPersonInformation) (*Pe
 }
 
 // SignIn implemets the Gaea service
-func (s *Service) SignIn(c context.Context, personID ulid.ULID, account *Account, password string) (*Person, *Session, error) {
-
+func (s *Service) SignIn(c context.Context, personID ulid.ULID, account *Account, password string, r *http.Request) (*Person, *Session, error) {
 	findAccount, err := s.Repo.GetAccountByID(c, account.ID)
 	if err != nil {
 		return nil, nil, err
@@ -62,7 +63,7 @@ func (s *Service) SignIn(c context.Context, personID ulid.ULID, account *Account
 		return nil, nil, err
 	}
 
-	session, err := NewSession(findAccount, defaultSessionDuration, net.IPv4zero) // TODO: Change IP
+	session, err := NewSession(findAccount, defaultSessionDuration, net.IPv4zero, r.UserAgent()) // TODO: Change IP
 	if err != nil {
 		return nil, nil, err
 	}
@@ -107,4 +108,9 @@ func (s *Service) UpdateAccount(c context.Context, personID ulid.ULID, oldAccoun
 // UpdatePersonInformation implemets the Gaea service
 func (s *Service) UpdatePersonInformation(c context.Context, personID ulid.ULID, newInfo *Person) (*Person, error) {
 	return &Person{}, nil
+}
+
+// CheckIfPersonHaveSession implements Gaea service
+func (s *Service) CheckIfPersonHaveSession(c context.Context, sessionID ulid.ULID, personID ulid.ULID) (*Session, error) {
+	return &Session{}, nil
 }
